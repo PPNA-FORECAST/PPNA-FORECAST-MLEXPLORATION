@@ -1,0 +1,20 @@
+Tesis: 
+
+Redes general: 
+-Conceptos
+-Backpropagation
+-Ecuaciones
+
+RNNS y LSTM: 
+https://www.youtube.com/watch?v=AsNTP8Kwu80 -> stat quest 
+https://arxiv.org/pdf/1808.03314.pdf
+https://web.stanford.edu/~jurafsky/slp3/9.pdf
+https://www.cs.toronto.edu/~tingwuwang/rnn_tutorial.pdf
+https://ieeexplore.ieee.org/document/9044359 -> https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9044359
+https://colah.github.io/posts/2015-08-Understanding-LSTMs/
+
+Agro: 
+-ppna
+-precipitaciones
+
+Tensorflow y python 
