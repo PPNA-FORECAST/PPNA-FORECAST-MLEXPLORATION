@@ -1,6 +1,5 @@
 """
 TO DO: 
-    -Armar documentación 
     -Convertirlo en una clase que cree una fig 
 """
 
@@ -12,6 +11,8 @@ from matplotlib import pyplot as plt
 from folium import plugins
 
 
+#PRE: The df must be previously loaded with columns labeled var1 and var2. 
+#POST: Prints every datapoint in a var1 vs var2 grid plot and shows the correlation R between both variables
 def show_correlation(df,fig, var1, var2): 
 
     fig.scatter(df[f"{var1}"], df[f"{var2}"], c='blue', alpha=0.7, s=5)
@@ -22,6 +23,9 @@ def show_correlation(df,fig, var1, var2):
     fig.set_ylabel(f'{var2}'.upper())
     fig.grid(True)
 
+
+#PRE: The df must be previously loaded. latitude and longitude must be among the lat and long values of the df
+#POST: Prints every ppna value recorded for the latitud, longitude location in a date vs ppna plot.
 def show_ppna_fixed_position (df, fig, latitude, longitude):
 
     fix_position_df = df[(df['longitude'] == longitude) & (df['latitude'] == latitude)].copy()
@@ -32,6 +36,10 @@ def show_ppna_fixed_position (df, fig, latitude, longitude):
     fig.set_ylabel('PPNA')
     fig.grid(True)
 
+
+#PRE: The df must be previously loaded. latitude and longitude must be among the lat and long values of the df. There must be ppna data recorded at years
+    # year1 and year2.
+#POST: Prints every ppna value recorded in year1 and year2 as two separated functions in a sigle date vs ppna grid plot.
 def show_ppna_year_comparision_fixed_position(df, fig, year1, year2, latitude, longitude): 
         
     fix_position_df = df[(df['longitude'] == longitude) & (df['latitude'] == latitude)].copy()
@@ -51,6 +59,10 @@ def show_ppna_year_comparision_fixed_position(df, fig, year1, year2, latitude, l
     fig.legend()
     fig.grid(True)
 
+
+#PRE: The df must be previously loaded with lat, long, date and ppna values.
+#POST: Prints map of earth with every ppna value recorded in it's specified position. The ppna values are graded in a thermal-like color scale
+    #  and the user can choose the date of the data being shown.
 def show_heat_map(df):
 
     # Crear un mapa centrado en la ubicación media de tus datos
@@ -90,6 +102,9 @@ def show_heat_map(df):
 
     display(mapa)
 
+
+#PRE: history must have the training information of a NN model. metric must be one of the stored metrics in history
+#POST: plots a graph of the metric evolution with each epoch for the training dataset as well as the validation dataset
 def plot_training_history(fig, history, metric):
 
     validation_metric = f"val_{metric}"
@@ -109,6 +124,10 @@ def plot_training_history(fig, history, metric):
 
     fig.set_ylim([bottom_of_y_axis, top_of_y_axis])
 
+
+#PRE: latitude and longitude must be among the recorded values of the test_df, which must be previously loaded.
+#POST: prints in a fortnight vs ppna graph the ppna values of the latitude, longitude position. It first shows the data used for training
+    #  and then prints the ppna values of the test_df dataframe and the values predicted by the model for those dates in particular.
 def plot_result_in_fixed_position(ax, longitude, latitude, index, model, test_df, input_steps,output_steps): 
         
     test_sequence_fixed_position_df = data.DataManager(test_df[(test_df['longitude'] == longitude) & (test_df['latitude'] == latitude)])
