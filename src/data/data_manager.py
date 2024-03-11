@@ -39,13 +39,14 @@ class DataManager(pd.DataFrame):
         mean = self.mean()
         std = self.std()
         self[['ppna', 'ppt', 'temp']] = (self[['ppna', 'ppt', 'temp']] - mean[['ppna', 'ppt', 'temp']]) / std[['ppna', 'ppt', 'temp']]
+        return mean, std
         
 
-    #PRE: The DataManager df must be previously normalised and must have a "ppna" column. 
+    #PRE: The DataManager df must be previously normalised and the first column must be "ppna" . 
         # mean and std must be loaded with that information from the normalised columns.
     #POST: de-normalises the "ppna" column from de df.
     def denormalize_data(self, mean, std):
-        self[['ppna']] = self[['ppna']] * std['ppna'] + mean['ppna']
+        self[0] = self[0] * std['ppna'] + mean['ppna']
 
 
     #PRE: The DataManager df must be previously loaded. seq_len and pre_len must be smaller than the amount of rows in the df.
