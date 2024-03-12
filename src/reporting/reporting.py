@@ -128,14 +128,22 @@ def plot_training_history(fig, history, metric):
 #PRE: latitude and longitude must be among the recorded values of the test_df, which must be previously loaded.
 #POST: prints in a fortnight vs ppna graph the ppna values of the latitude, longitude position. It first shows the data used for training
     #  and then prints the ppna values of the test_df dataframe and the values predicted by the model for those dates in particular.
-def plot_result_in_fixed_position(ax, longitude, latitude, index, model, test_df, input_steps,output_steps): 
+def plot_result_in_fixed_position(ax, longitude, latitude, index, model, test_df, input_steps,output_steps, mean, std): 
         
     test_sequence_fixed_position_df = data.DataManager(test_df[(test_df['longitude'] == longitude) & (test_df['latitude'] == latitude)])
     test_sequence_fixed_position, test_labels_fixed_position = test_sequence_fixed_position_df.sequence_data_preparation(input_steps, output_steps)
     predict = model.predict(test_sequence_fixed_position, verbose=0)
-    ax.plot(test_sequence_fixed_position[index,:, -1], label='Input data')
-    ax.plot(range(input_steps , output_steps  + input_steps), predict[index], label="Model predictions")
-    ax.plot(range(input_steps , output_steps  + input_steps), test_labels_fixed_position[index], label="Data labels")
+
+    labels = data.DataManager(test_labels_fixed_position[index])
+    labels.denormalize_data(mean,std)
+    inputs = data.DataManager(test_sequence_fixed_position[index,:, -1])
+    inputs.denormalize_data(mean,std)
+    predicts = data.DataManager(predict[index])
+    predicts.denormalize_data(mean,std)
+
+    ax.plot(inputs, label='Input data')
+    ax.plot(range(input_steps , output_steps  + input_steps), predicts, label="Model predictions")
+    ax.plot(range(input_steps , output_steps  + input_steps), labels, label="Data labels")
     ax.set_xlabel("fortnight")  
     ax.set_ylabel("Normalized PPNA") 
     ax.set_title(f"Prediction for location ['{longitude}','{latitude}']")
