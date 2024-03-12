@@ -14,19 +14,19 @@ from datetime import datetime, timedelta
 Ingestion and Transformation of ppna database 
 """
 
-def ppna_database_ingest(file_name):
+def ppna_database_ingest(file_name, index):
     
     ppna_df = pd.read_csv(f'../data/raw/{file_name}', header=None)
 
-    #Add id_ppna
-    ppna_df['id_ppna'] = range(0, len(ppna_df)) 
+    #Add id_date
     ppna_df['id_date'] = range(0, len(ppna_df)) 
 
     #Delete first row (headers)
     ppna_df=ppna_df[1:]
 
     #Melt each column of coordenate into rows 
-    ppna_df = pd.melt(ppna_df, id_vars=['id_ppna', 'id_date'], var_name='id_cord', value_name='ppna')
+    ppna_df = pd.melt(ppna_df, id_vars=['id_date'], var_name='id_cord', value_name='ppna')
+    ppna_df['id_cord'] = ppna_df['id_cord'].astype(int) + index - ppna_df['id_cord'].astype(int).min()
 
     return ppna_df
 
@@ -35,19 +35,19 @@ def ppna_database_ingest(file_name):
 Ingestion and Transformation of precipitation database 
 """
 
-def ppt_database_ingest(file_name):
+def ppt_database_ingest(file_name, index):
 
     ppt_df = pd.read_csv(f'../data/raw/{file_name}', header=None)
 
-    #Add id_ppna
-    ppt_df['id_ppt'] = range(0, len(ppt_df)) 
+    #Add id_date
     ppt_df['id_date'] = range(0, len(ppt_df)) 
 
     #Delete first row (headers)
     ppt_df=ppt_df[1:]
 
     #Melt each column of coordenate into rows 
-    ppt_df = pd.melt(ppt_df, id_vars=['id_ppt', 'id_date'], var_name='id_cord', value_name='ppt')
+    ppt_df = pd.melt(ppt_df, id_vars=['id_date'], var_name='id_cord', value_name='ppt')
+    ppt_df['id_cord'] = ppt_df['id_cord'].astype(int) + index - ppt_df['id_cord'].astype(int).min()
 
     return ppt_df
 
@@ -55,27 +55,27 @@ def ppt_database_ingest(file_name):
 Ingestion and Transformation of temperature database 
 """
 
-def temp_database_ingest(file_name):
+def temp_database_ingest(file_name, index):
 
     temp_df = pd.read_csv(f'../data/raw/{file_name}', header=None)
 
-    #Add id_ppna
-    temp_df['id_temp'] = range(0, len(temp_df)) 
+    #Add id_date
     temp_df['id_date'] = range(0, len(temp_df)) 
 
     #Delete first row (headers)
     temp_df=temp_df[1:]
 
     #Melt each column of coordenate into rows 
-    temp_df = pd.melt(temp_df, id_vars=['id_temp', 'id_date'], var_name='id_cord', value_name='temp')
-
+    temp_df = pd.melt(temp_df, id_vars=['id_date'], var_name='id_cord', value_name='temp')
+    temp_df['id_cord'] = temp_df['id_cord'].astype(int) + index - temp_df['id_cord'].astype(int).min()
+ 
     return temp_df
 
 """
 Ingestion and Transformation of Cordenates database 
 """
 
-def cord_database_ingest(file_name):
+def cord_database_ingest(file_name, index):
 
     cord_df = pd.read_csv(f'../data/raw/{file_name}')
 
@@ -83,7 +83,7 @@ def cord_database_ingest(file_name):
     cord_df = cord_df[['latitude','longitude']]
     
     #Add id_cord
-    cord_df['id_cord'] = range(0, len(cord_df)) 
+    cord_df['id_cord'] = range(index, len(cord_df)+index) 
 
     return cord_df
 
@@ -118,7 +118,7 @@ def merge_databases(ppna_df, temp_df, ppt_df,cord_df,date_df):
 
     ppna_df = temp_df.merge(ppna_df, on=['id_date', 'id_cord'], how='inner')
     ppna_df = ppt_df.merge(ppna_df, on=['id_date', 'id_cord'], how='inner')
-    ppna_df = ppna_df[['ppna', 'temp','ppt', 'date', 'latitude', 'longitude']]
+    ppna_df = ppna_df[['ppna', 'temp','ppt', 'date', 'latitude', 'longitude', 'dense']]
 
     ppna_df['ppna'] = pd.to_numeric(ppna_df['ppna'], errors='coerce')
     ppna_df['temp'] = pd.to_numeric(ppna_df['temp'], errors='coerce')
