@@ -1,1 +1,1 @@
-from .model_lstm import *
+from .models import *
