@@ -8,12 +8,12 @@ class modelLstm(tf.keras.Sequential):
     #POST: returns a defined and compiled model with a LSTM layer and two dense layers. The optimizer used is adam and the metric is RMSE
     def __init__(self, input_steps, output_steps, input_features, output_features):
         super().__init__()  # Call to basic class constructor
-        LEARNING_RATE = 0.000003
+        LEARNING_RATE = 0.000005
 
         # Add sequential layers to the model
         self.add(Input((input_steps, input_features)))
-        self.add(LSTM(128))
-        self.add(Dense(32, activation='relu'))
+        self.add(LSTM(64))
+        self.add(Dense(16, activation='relu'))
         self.add(Dense(output_steps * output_features, activation='linear'))
 
         # Compile the model
