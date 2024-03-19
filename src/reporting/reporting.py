@@ -145,6 +145,6 @@ def plot_result_in_fixed_position(ax, longitude, latitude, index, model, test_df
     ax.plot(range(input_steps , output_steps  + input_steps), predicts, label="Model predictions")
     ax.plot(range(input_steps , output_steps  + input_steps), labels, label="Data labels")
     ax.set_xlabel("fortnight")  
-    ax.set_ylabel("Normalized PPNA") 
+    ax.set_ylabel("PPNA") 
     ax.set_title(f"Prediction for location ['{longitude}','{latitude}']")
     ax.legend()
