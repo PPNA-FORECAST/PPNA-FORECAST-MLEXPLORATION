@@ -125,7 +125,7 @@ def plot_training_history(fig, history, metric):
     fig.set_ylim([bottom_of_y_axis, top_of_y_axis])
 
 
-#PRE: latitude and longitude must be among the recorded values of the test_df, which must be previously loaded.
+#PRE: latitude and longitude must be among the recorded values of the test_df, which must be previously loaded. PPNA has to be the last column of the DF.
 #POST: prints in a fortnight vs ppna graph the ppna values of the latitude, longitude position. It first shows the data used for training
     #  and then prints the ppna values of the test_df dataframe and the values predicted by the model for those dates in particular.
 def plot_result_in_fixed_position(ax, longitude, latitude, index, model, test_df, input_steps,output_steps, mean, std): 
